@@ -2,6 +2,7 @@ name: CI Build for Windows 10+ x64
 
 on: 
   workflow_dispatch:
+  push:
 
 jobs:
   build_windows-2025:
@@ -63,7 +64,7 @@ jobs:
       shell: msys2 {0}
       run: |
         cd ./build
-        cmake -DCMAKE_PREFIX_PATH='D:/a/salyh/wsjt-wsjtx-2m-buildtest/local/hamlib;D:/a/salyh/wsjt-wsjtx-2m-buildtest/local/qt693/Qt/6.9.3/mingw_64' ..
+        cmake -CMAKE_Fortran_COMPILER=gfortran -DCMAKE_PREFIX_PATH='D:/a/salyh/wsjt-wsjtx-2m-buildtest/local/hamlib;D:/a/salyh/wsjt-wsjtx-2m-buildtest/local/qt693/Qt/6.9.3/mingw_64' ..
 
 
     - name: Build
