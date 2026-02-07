@@ -13,19 +13,18 @@ jobs:
     - run: git config --global core.autocrlf input
     - uses: actions/checkout@v5
 
-    - name: Install OmniRig
+    - name: Download and extract omnirig
       run: |
         # Download the zip file
         Invoke-WebRequest -Uri "http://dxatlas.com/OmniRig/Files/OmniRig.zip" -OutFile "OmniRig.zip"
         
         # Extract the zip
         Expand-Archive -Path "OmniRig.zip" -DestinationPath "installer" -Force
-        
-        $process = Start-Process -FilePath "$PWD\installer\OmniRigSetup.exe" -ArgumentList "/S" -Wait -PassThru
-        if ($process.ExitCode -ne 0) {
-        Write-Host "*** Error: Installer returned exit code $($process.ExitCode) ***"
-        exit 1
-        }
+      shell: pwsh
+
+    - name: Download and extract omnirig
+      run: |        
+        .\installer\OmniRigSetup.exe /S /silent /quiet
         
         # Verify installation
         $pathTest = "$env:PROGRAMFILES (x86)\Afreet\Omnirig\omnirig.exe"
