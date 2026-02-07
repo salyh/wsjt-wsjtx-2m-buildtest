@@ -17,7 +17,7 @@ jobs:
         update: true
         cache: true
         install: >-
-          git python base-devel make unzip zip tar gcc-fortran
+          git python base-devel make unzip zip tar mingw-w64-x86_64-gcc-fortran
         pacboy: >-
           toolchain:p
           autotools:p
@@ -79,4 +79,4 @@ jobs:
     #  run: |
     #    cp ./build/JS8Call.exe ./build/JS8Call/
 
-    #mingw-w64-x86_64-gcc-fortran
+    #
