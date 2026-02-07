@@ -17,7 +17,7 @@ jobs:
         update: true
         cache: true
         install: >-
-          git python base-devel make unzip zip tar
+          git python base-devel make unzip zip tar gcc-fortran
         pacboy: >-
           toolchain:p
           autotools:p
@@ -64,7 +64,7 @@ jobs:
       shell: msys2 {0}
       run: |
         cd ./build
-        cmake -CMAKE_Fortran_COMPILER=gfortran -DCMAKE_PREFIX_PATH='D:/a/salyh/wsjt-wsjtx-2m-buildtest/local/hamlib;D:/a/salyh/wsjt-wsjtx-2m-buildtest/local/qt693/Qt/6.9.3/mingw_64' ..
+        cmake -DCMAKE_PREFIX_PATH='D:/a/salyh/wsjt-wsjtx-2m-buildtest/local/hamlib;D:/a/salyh/wsjt-wsjtx-2m-buildtest/local/qt693/Qt/6.9.3/mingw_64' ..
 
 
     - name: Build
@@ -78,3 +78,5 @@ jobs:
     #  shell: msys2 {0}
     #  run: |
     #    cp ./build/JS8Call.exe ./build/JS8Call/
+
+    #mingw-w64-x86_64-gcc-fortran
