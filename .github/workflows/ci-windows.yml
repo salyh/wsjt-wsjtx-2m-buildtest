@@ -18,11 +18,28 @@ jobs:
         # Download the zip file
         Invoke-WebRequest -Uri "http://dxatlas.com/OmniRig/Files/OmniRig.zip" -OutFile "OmniRig.zip"
         
-        # Unzip it
-        Expand-Archive -Path "OmniRig.zip" -DestinationPath "extracted" -Force
+        # Extract the zip
+        Expand-Archive -Path "OmniRig.zip" -DestinationPath "installer" -Force
         
-        # Run the executable
-        .\extracted\OmniRigSetup.exe
+        # Run the installer
+        $cmd = "$PWD\installer\OmniRigSetup.exe"
+        $exitCode = Invoke-Command -ScriptBlock { cmd /c $cmd *> $null; return $LASTEXITCODE }
+        
+        if ($exitCode -ne 0) {
+        Write-Host "*** Error: Installer returned exit code $exitCode ***"
+        exit 1
+        } else {
+        Write-Host "  --> OmniRig Installation Completed."
+        }
+        
+        # Verify installation
+        $pathTest = "$env:PROGRAMFILES (x86)\Afreet\Omnirig\omnirig.exe"
+        if (Test-Path $pathTest) {
+        Write-Host "  --> OmniRig Installer indicated successful deployment"
+        } else {
+        Write-Host "*** Install failed. Expected file not found at: $pathTest ***"
+        exit 1
+        }
       shell: pwsh
 
     - uses: msys2/setup-msys2@v2
