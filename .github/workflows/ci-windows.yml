@@ -70,29 +70,30 @@ jobs:
         mv 'D:/a/salyh/wsjt-wsjtx-2m-buildtest/local/hamlib465-tmp/hamlib-w64-4.6.5' 'D:/a/salyh/wsjt-wsjtx-2m-buildtest/local/hamlib'
         mv 'D:/a/salyh/wsjt-wsjtx-2m-buildtest/local/hamlib/lib/gcc/libhamlib.dll.a' 'D:/a/salyh/wsjt-wsjtx-2m-buildtest/local/hamlib/lib/libhamlib.dll.a'
 
+
     - name: Install OmniRig
-      shell: msys2 {0}
-      run: |
-        # Run the installer
-        ./installer/OmniRigSetup.exe /S /silent /quiet
-        exitCode=$?
+      run: |        
+        $cmd = ".\installer\OmniRigSetup.exe /S /silent /quiet"
+        $exitCode = Invoke-Command -ScriptBlock { cmd /c $cmd *> $null; return $LASTEXITCODE }
         
-        if [ $exitCode -ne 0 ]; then
-          echo "*** Error: Installer returned exit code $exitCode ***"
-          exit 1
-        else
-          echo "  --> OmniRig Installation Completed."
-        fi
-        
+        if ($exitCode -ne 0) {
+        Write-Host "*** Error: Installer returned exit code $exitCode ***"
+        exit 1
+        } else {
+        Write-Host "  --> OmniRig Installation Completed."
+        }
+
+
         # Verify installation
-        pathTest="/c/Program Files (x86)/Afreet/Omnirig/omnirig.exe"
-        if [ -f "$pathTest" ]; then
-          echo "  --> OmniRig Installer indicated successful deployment"
-        else
-          echo "*** Install failed. Expected file not found at: $pathTest ***"
-          exit 1
-        fi
-      
+        $pathTest = "$env:PROGRAMFILES (x86)\Afreet\Omnirig\omnirig.exe"
+        if (Test-Path $pathTest) {
+        Write-Host "  --> OmniRig Installer indicated successful deployment"
+        } else {
+        Write-Host "*** Install failed. Expected file not found at: $pathTest ***"
+        exit 1
+        }
+      shell: pwsh
+
     - name: Configure
       shell: msys2 {0}
       run: |
