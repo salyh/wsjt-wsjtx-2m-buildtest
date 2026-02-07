@@ -12,6 +12,19 @@ jobs:
     steps:
     - run: git config --global core.autocrlf input
     - uses: actions/checkout@v5
+
+    - name: Install OmniRig
+      run: |
+        # Download the zip file
+        Invoke-WebRequest -Uri "http://dxatlas.com/OmniRig/Files/OmniRig.zip" -OutFile "OmniRig.zip"
+        
+        # Unzip it
+        Expand-Archive -Path "OmniRig.zip" -DestinationPath "extracted" -Force
+        
+        # Run the executable
+        .\extracted\OmniRigSetup.exe
+      shell: pwsh
+
     - uses: msys2/setup-msys2@v2
       with:
         update: true
