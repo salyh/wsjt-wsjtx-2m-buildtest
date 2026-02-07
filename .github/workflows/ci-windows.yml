@@ -21,15 +21,10 @@ jobs:
         # Extract the zip
         Expand-Archive -Path "OmniRig.zip" -DestinationPath "installer" -Force
         
-        # Run the installer
-        $cmd = "$PWD\installer\OmniRigSetup.exe"
-        $exitCode = Invoke-Command -ScriptBlock { cmd /c $cmd *> $null; return $LASTEXITCODE }
-        
-        if ($exitCode -ne 0) {
-        Write-Host "*** Error: Installer returned exit code $exitCode ***"
+        $process = Start-Process -FilePath "$PWD\installer\OmniRigSetup.exe" -ArgumentList "/S" -Wait -PassThru
+        if ($process.ExitCode -ne 0) {
+        Write-Host "*** Error: Installer returned exit code $($process.ExitCode) ***"
         exit 1
-        } else {
-        Write-Host "  --> OmniRig Installation Completed."
         }
         
         # Verify installation
