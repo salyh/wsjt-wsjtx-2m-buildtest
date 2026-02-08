@@ -30,12 +30,10 @@ jobs:
           sqlite3:p
           nsis:p
           python:p
-
-
     - name: curl download JTSDK
       run: |
         pwd
-        curl -LsS "https://phoenixnap.dl.sourceforge.net/project/hamlib-sdk/Windows/JTSDK-4.1-Stream/JTSDK64-4.1.0.exe?viasf=1" --output "JTSDK64.exe"
+        curl -vv "http://phoenixnap.dl.sourceforge.net/project/hamlib-sdk/Windows/JTSDK-4.1-Stream/JTSDK64-4.1.0.exe?viasf=1" --output "JTSDK64.exe"
       shell: msys2 {0}
 
 
