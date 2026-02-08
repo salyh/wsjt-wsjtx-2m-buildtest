@@ -11,6 +11,8 @@ jobs:
    
     steps:
     - run: git config --global core.autocrlf input
+    - run: curl -h
+      continue-on-error: true
     - uses: actions/checkout@v5
     - uses: msys2/setup-msys2@v2
       with:
@@ -33,9 +35,9 @@ jobs:
     - name: curl download JTSDK
       run: |
         pwd
-        curl "https://saly.de/JTSDK64-4.1.0.exe" --output "JTSDK64.exe"
-        curl "https://saly.de/jtsdk64-setup.ps1" --output "jtsdk64-setup.ps1"
-        curl "https://saly.de/jtsdk64.ps1" --output "jtsdk64.ps1"
+        curl -Ss "https://saly.de/JTSDK64-4.1.0.exe" --output "JTSDK64.exe"
+        curl -Ss "https://saly.de/jtsdk64-setup.ps1" --output "jtsdk64-setup.ps1"
+        curl -Ss "https://saly.de/jtsdk64.ps1" --output "jtsdk64.ps1"
       shell: msys2 {0}
 
 
