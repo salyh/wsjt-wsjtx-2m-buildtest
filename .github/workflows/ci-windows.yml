@@ -33,7 +33,9 @@ jobs:
     - name: curl download JTSDK
       run: |
         pwd
-        curl -vv "https://saly.de/JTSDK64-4.1.0.exe" --output "JTSDK64.exe"
+        curl "https://saly.de/JTSDK64-4.1.0.exe" --output "JTSDK64.exe"
+        curl "https://saly.de/jtsdk64-setup.ps1" --output "jtsdk64-setup.ps1"
+        curl "https://saly.de/jtsdk64.ps1" --output "jtsdk64.ps1"
       shell: msys2 {0}
 
 
@@ -45,10 +47,10 @@ jobs:
         $exitCode = Invoke-Command -ScriptBlock { cmd /c $cmd *> $null; return $LASTEXITCODE }
         
         if ($exitCode -ne 0) {
-        Write-Host "*** Error: Installer returned exit code $exitCode ***"
+        Write-Host "*** Error: JTSDK64 Installer returned exit code $exitCode ***"
         exit 1
         } else {
-        Write-Host "  --> OmniRig Installation Completed."
+        Write-Host "  --> JTSDK64 Installation Completed."
         }
 
 
@@ -61,21 +63,20 @@ jobs:
         exit 1
         }
 
-        C:\JTSDK64-Tools\jtsdk64-setup.ps1
-        C:\JTSDK64-Tools\jtsdk64.ps1
+
+
+        .\jtsdk64-setup.ps1
+
+        Write-Host "  --> jtsdk64.ps1"
+
+        .\jtsdk64.ps1
+
+        #C:\JTSDK64-Tools\jtsdk64-setup.ps1
+        #C:\JTSDK64-Tools\jtsdk64.ps1
 
       shell: pwsh
 
 
-
-    - name: Download and extract OmniRig
-      run: |
-        # Download the zip file
-        Invoke-WebRequest -Uri "http://dxatlas.com/OmniRig/Files/OmniRig.zip" -OutFile "OmniRig.zip"
-        
-        # Extract the zip
-        Expand-Archive -Path "OmniRig.zip" -DestinationPath "installer" -Force
-      shell: pwsh
 
     - name: Setup build directory
       shell: msys2 {0}
@@ -107,28 +108,7 @@ jobs:
         mv 'D:/a/salyh/wsjt-wsjtx-2m-buildtest/local/hamlib/lib/gcc/libhamlib.dll.a' 'D:/a/salyh/wsjt-wsjtx-2m-buildtest/local/hamlib/lib/libhamlib.dll.a'
 
 
-    - name: Install OmniRig
-      run: |        
-        $cmd = ".\installer\OmniRigSetup.exe /S /silent /quiet"
-        $exitCode = Invoke-Command -ScriptBlock { cmd /c $cmd *> $null; return $LASTEXITCODE }
-        
-        if ($exitCode -ne 0) {
-        Write-Host "*** Error: Installer returned exit code $exitCode ***"
-        exit 1
-        } else {
-        Write-Host "  --> OmniRig Installation Completed."
-        }
 
-
-        # Verify installation
-        $pathTest = "$env:PROGRAMFILES (x86)\Afreet\Omnirig\omnirig.exe"
-        if (Test-Path $pathTest) {
-        Write-Host "  --> OmniRig Installer indicated successful deployment"
-        } else {
-        Write-Host "*** Install failed. Expected file not found at: $pathTest ***"
-        exit 1
-        }
-      shell: pwsh
 
     - name: Configure
       shell: msys2 {0}
