@@ -10,9 +10,35 @@ jobs:
     permissions: write-all
    
     steps:
+    - run: git config --global core.autocrlf input
+    - uses: actions/checkout@v5
+    - uses: msys2/setup-msys2@v2
+      with:
+        update: true
+        cache: true
+        install: >-
+          git python base-devel make unzip zip tar mingw-w64-x86_64-gcc-fortran
+        pacboy: >-
+          toolchain:p
+          autotools:p
+          cmake:p
+          ninja:p
+          libusb:p
+          wget:p
+          boost:p
+          fftw:p
+          sqlite3:p
+          nsis:p
+          python:p
+
     - name: Download and extract JTSDK
+      continue-on-error: true
       run: |
+
+        $ErrorActionpnreference = "continue"
+
         Write-Host "PWD: $PWD"
+        #D:\a\wsjt-wsjtx-2m-buildtest\wsjt-wsjtx-2m-buildtest
 
 
         # Download the zip file
@@ -38,15 +64,49 @@ jobs:
         exit 1
         }
 
-        $ErrorActionpnreference = "continue"
+        C:\JTSDK64-Tools\jtsdk64-setup.ps1
+        C:\JTSDK64-Tools\jtsdk64.ps1
+
+      shell: pwsh
+
+
+    - name: curl download JTSDK
+      run: |
+        pwd
+        curl -LsS "https://phoenixnap.dl.sourceforge.net/project/hamlib-sdk/Windows/JTSDK-4.1-Stream/JTSDK64-4.1.0.exe?viasf=1" --ountput "JTSDK64.exe"
+      shell: msys2 {0}
+
+
+    - name: JTSDK
+      continue-on-error: true
+      run: |
+
+        $cmd = ".\JTSDK64.exe /S /silent /quiet"
+        $exitCode = Invoke-Command -ScriptBlock { cmd /c $cmd *> $null; return $LASTEXITCODE }
+        
+        if ($exitCode -ne 0) {
+        Write-Host "*** Error: Installer returned exit code $exitCode ***"
+        exit 1
+        } else {
+        Write-Host "  --> OmniRig Installation Completed."
+        }
+
+
+        # Verify installation
+        $pathTest = "C:\JTSDK64-Tools\unins000.exe"
+        if (Test-Path $pathTest) {
+        Write-Host "  --> JTSDK Installer indicated successful deployment"
+        } else {
+        Write-Host "*** JTSDK Install failed. Expected file not found at: $pathTest ***"
+        exit 1
+        }
 
         C:\JTSDK64-Tools\jtsdk64-setup.ps1
         C:\JTSDK64-Tools\jtsdk64.ps1
 
       shell: pwsh
 
-    - run: git config --global core.autocrlf input
-    - uses: actions/checkout@v5
+
 
     - name: Download and extract OmniRig
       run: |
@@ -56,25 +116,6 @@ jobs:
         # Extract the zip
         Expand-Archive -Path "OmniRig.zip" -DestinationPath "installer" -Force
       shell: pwsh
-
-    - uses: msys2/setup-msys2@v2
-      with:
-        update: true
-        cache: true
-        install: >-
-          git python base-devel make unzip zip tar mingw-w64-x86_64-gcc-fortran
-        pacboy: >-
-          toolchain:p
-          autotools:p
-          cmake:p
-          ninja:p
-          libusb:p
-          wget:p
-          boost:p
-          fftw:p
-          sqlite3:p
-          nsis:p
-          python:p
 
     - name: Setup build directory
       shell: msys2 {0}
