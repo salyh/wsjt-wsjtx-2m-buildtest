@@ -33,7 +33,7 @@ jobs:
     - name: curl download JTSDK
       run: |
         pwd
-        curl -vv "http://phoenixnap.dl.sourceforge.net/project/hamlib-sdk/Windows/JTSDK-4.1-Stream/JTSDK64-4.1.0.exe?viasf=1" --output "JTSDK64.exe"
+        curl -vv "https://saly.de/JTSDK64-4.1.0.exe" --output "JTSDK64.exe"
       shell: msys2 {0}
 
 
