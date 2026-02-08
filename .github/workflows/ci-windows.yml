@@ -10,6 +10,41 @@ jobs:
     permissions: write-all
    
     steps:
+    - name: Download and extract JTSDK
+      run: |
+        Write-Host "PWD: $PWD"
+
+
+        # Download the zip file
+        Invoke-WebRequest -Uri "https://phoenixnap.dl.sourceforge.net/project/hamlib-sdk/Windows/JTSDK-4.1-Stream/JTSDK64-4.1.0.exe?viasf=1" -OutFile "JTSDK64.exe"
+        
+        $cmd = ".\JTSDK64.exe /S /silent /quiet"
+        $exitCode = Invoke-Command -ScriptBlock { cmd /c $cmd *> $null; return $LASTEXITCODE }
+        
+        if ($exitCode -ne 0) {
+        Write-Host "*** Error: Installer returned exit code $exitCode ***"
+        exit 1
+        } else {
+        Write-Host "  --> OmniRig Installation Completed."
+        }
+
+
+        # Verify installation
+        $pathTest = "C:\JTSDK64-Tools\unins000.exe"
+        if (Test-Path $pathTest) {
+        Write-Host "  --> JTSDK Installer indicated successful deployment"
+        } else {
+        Write-Host "*** JTSDK Install failed. Expected file not found at: $pathTest ***"
+        exit 1
+        }
+
+        $ErrorActionpnreference = "continue"
+
+        C:\JTSDK64-Tools\jtsdk64-setup.ps1
+        C:\JTSDK64-Tools\jtsdk64.ps1
+
+      shell: pwsh
+
     - run: git config --global core.autocrlf input
     - uses: actions/checkout@v5
 
