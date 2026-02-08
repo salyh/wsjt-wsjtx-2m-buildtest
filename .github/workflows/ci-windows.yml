@@ -63,16 +63,11 @@ jobs:
         exit 1
         }
 
+        Copy-Item "jtsdk64-setup.ps1" "C:\JTSDK64-Tools\jtsdk64-setup.ps1" -Force
+        Copy-Item "jtsdk64.ps1" "C:\JTSDK64-Tools\jtsdk64.ps1" -Force
 
-
-        .\jtsdk64-setup.ps1
-
-        Write-Host "  --> jtsdk64.ps1"
-
-        .\jtsdk64.ps1
-
-        #C:\JTSDK64-Tools\jtsdk64-setup.ps1
-        #C:\JTSDK64-Tools\jtsdk64.ps1
+        C:\JTSDK64-Tools\jtsdk64-setup.ps1
+        C:\JTSDK64-Tools\jtsdk64.ps1
 
       shell: pwsh
 
