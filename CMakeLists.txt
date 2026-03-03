@@ -849,6 +849,7 @@ if (WIN32)
   if (DUMPCPP-NOTFOUND)
     message (FATAL_ERROR "dumpcpp tool not found")
   endif (DUMPCPP-NOTFOUND)
+  message (STATUS "dumpcpp found at: ${DUMPCPP}")
   execute_process (
     COMMAND ${DUMPCPP} -getfile {4FE359C5-A58F-459D-BE95-CA559FB4F270}
     OUTPUT_VARIABLE AXSERVER
