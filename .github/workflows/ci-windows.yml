@@ -28,7 +28,7 @@ jobs:
         update: true
         cache: true
         install: >-
-          git python base-devel make unzip zip tar mingw-w64-x86_64-gcc-fortran
+          git python base-devel make unzip zip tar mingw-w64-x86_64-gcc-fortran mingw-w64-x86_64-qt6-activeqt
         pacboy: >-
           toolchain:p
           autotools:p
@@ -55,7 +55,7 @@ jobs:
         version: '6.9.3'
         target: 'desktop'
         arch: 'win64_mingw'
-        modules: 'qtmultimedia qtserialport activeqt'
+        modules: 'qtmultimedia qtserialport'
         cache: true
         dir: 'D:/a/salyh/wsjt-wsjtx-2m-buildtest/local/qt693'
 
