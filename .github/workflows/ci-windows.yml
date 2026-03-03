@@ -103,7 +103,7 @@ jobs:
       run: |
 
         find D:/a/salyh -iname '*dumpcpp*'
-        find D:\a\_temp\msys64 -iname '*dumpcpp*'
+        find D:/a/_temp/msys64 -iname '*dumpcpp*'
         
       
         cd ./build
