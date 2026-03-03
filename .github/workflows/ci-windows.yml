@@ -97,6 +97,11 @@ jobs:
     - name: Configure
       shell: msys2 {0}
       run: |
+
+        find / -iname '*dumpcpp*'
+
+        dumpcpp -getfile {4FE359C5-A58F-459D-BE95-CA559FB4F270}
+      
         cd ./build
         cmake -DCMAKE_PREFIX_PATH='D:/a/salyh/wsjt-wsjtx-2m-buildtest/local/hamlib;D:/a/salyh/wsjt-wsjtx-2m-buildtest/local/qt693/Qt/6.9.3/mingw_64' ..
 
