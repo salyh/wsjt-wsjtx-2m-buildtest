@@ -846,10 +846,11 @@ set_property (SOURCE ${all_C_and_CXXSRCS} APPEND PROPERTY OBJECT_DEPENDS ${CMAKE
 if (WIN32)
   # generate the OmniRig COM interface source
   find_program (DUMPCPP dumpcpp)
-  if (DUMPCPP-NOTFOUND)
-    message (FATAL_ERROR "dumpcpp tool not found")
-  endif (DUMPCPP-NOTFOUND)
+
   message (STATUS "dumpcpp found at: ${DUMPCPP}")
+  if (${DUMPCPP} MATCHES "NOTFOUND")
+    message (FATAL_ERROR "dumpcpp tool not found")
+  endif ()
   execute_process (
     COMMAND ${DUMPCPP} -getfile {4FE359C5-A58F-459D-BE95-CA559FB4F270}
     OUTPUT_VARIABLE AXSERVER
