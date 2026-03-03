@@ -23,6 +23,7 @@ jobs:
       shell: pwsh
 
     - uses: msys2/setup-msys2@v2
+      id: msys2
       with:
         update: true
         cache: true
@@ -40,6 +41,9 @@ jobs:
           sqlite3:p
           nsis:p
           python:p
+    - env:
+        MSYS2_LOCATION: ${{ steps.msys2.outputs.msys2-location }}
+      run: echo "$env:MSYS2_LOCATION"
 
     - name: Setup build directory
       shell: msys2 {0}
@@ -98,9 +102,9 @@ jobs:
       shell: msys2 {0}
       run: |
 
-        find D:/a/salyh/wsjt-wsjtx-2m-buildtest/local/qt693 -iname '*dumpcpp*'
+        find D:/a/salyh -iname '*dumpcpp*'
 
-        dumpcpp -getfile {4FE359C5-A58F-459D-BE95-CA559FB4F270}
+        
       
         cd ./build
         cmake -DCMAKE_PREFIX_PATH='D:/a/salyh/wsjt-wsjtx-2m-buildtest/local/hamlib;D:/a/salyh/wsjt-wsjtx-2m-buildtest/local/qt693/Qt/6.9.3/mingw_64' ..
