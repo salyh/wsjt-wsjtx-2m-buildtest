@@ -98,7 +98,7 @@ jobs:
       shell: msys2 {0}
       run: |
 
-        find / -iname '*dumpcpp*'
+        find D:/a/salyh/wsjt-wsjtx-2m-buildtest/local/qt693 -iname '*dumpcpp*'
 
         dumpcpp -getfile {4FE359C5-A58F-459D-BE95-CA559FB4F270}
       
